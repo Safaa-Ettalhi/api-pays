@@ -1,0 +1,610 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de Pays",
+        "description": "API pour la gestion des informations sur les pays",
+        "contact": {
+            "name": "Support API",
+            "email": "contact@example.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api",
+            "description": "Serveur API"
+        }
+    ],
+    "paths": {
+        "/register": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Inscription d'un nouvel utilisateur",
+                "operationId": "0903f2e0df1a8857bee538fc055417f0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Utilisateur inscrit avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|abcdefghijklmnopqrstuvwxyz"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Données invalides"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Connexion d'un utilisateur",
+                "operationId": "2dd578ff7aba2721293dac66833b27d1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Connexion réussie",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|abcdefghijklmnopqrstuvwxyz"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Identifiants invalides"
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Déconnexion d'un utilisateur",
+                "operationId": "68a6108af04af5e3bc1ea68a6c6f1299",
+                "responses": {
+                    "200": {
+                        "description": "Déconnexion réussie",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Déconnexion réussie"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/user": {
+            "get": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Récupérer les informations de l'utilisateur connecté",
+                "operationId": "99e9c2c91427f6bf63c2f0ef765a768f",
+                "responses": {
+                    "200": {
+                        "description": "Informations de l'utilisateur récupérées avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/countries": {
+            "get": {
+                "tags": [
+                    "Pays"
+                ],
+                "summary": "Récupérer la liste de tous les pays",
+                "operationId": "44042ed84da01c70ce052bb1b814734e",
+                "responses": {
+                    "200": {
+                        "description": "Liste des pays récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Country"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Pays"
+                ],
+                "summary": "Créer un nouveau pays",
+                "operationId": "a0415a40316de0fb9e3015dd1c0508a0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "capital",
+                                    "population",
+                                    "region"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Nom du pays",
+                                        "type": "string"
+                                    },
+                                    "capital": {
+                                        "description": "Capitale du pays",
+                                        "type": "string"
+                                    },
+                                    "population": {
+                                        "description": "Population du pays",
+                                        "type": "integer"
+                                    },
+                                    "region": {
+                                        "description": "Région du pays",
+                                        "type": "string"
+                                    },
+                                    "flag": {
+                                        "description": "Drapeau du pays (image)",
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Pays créé avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Country"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Données invalides"
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/countries/{id}": {
+            "get": {
+                "tags": [
+                    "Pays"
+                ],
+                "summary": "Récupérer les détails d'un pays spécifique",
+                "operationId": "4c482b67c13252558fcae0882fe68579",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID du pays",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Détails du pays récupérés avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Country"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pays non trouvé"
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Pays"
+                ],
+                "summary": "Supprimer un pays",
+                "operationId": "60fa29d1b3b56e310866a66246162524",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID du pays",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Pays supprimé avec succès"
+                    },
+                    "404": {
+                        "description": "Pays non trouvé"
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/countries/{id}/update": {
+            "post": {
+                "tags": [
+                    "Pays"
+                ],
+                "summary": "Mettre à jour un pays existant (alternative pour Swagger)",
+                "operationId": "5384be3dec943ee217f4564ea0e01323",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID du pays",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Nom du pays",
+                                        "type": "string"
+                                    },
+                                    "capital": {
+                                        "description": "Capitale du pays",
+                                        "type": "string"
+                                    },
+                                    "population": {
+                                        "description": "Population du pays",
+                                        "type": "integer"
+                                    },
+                                    "region": {
+                                        "description": "Région du pays",
+                                        "type": "string"
+                                    },
+                                    "flag": {
+                                        "description": "Drapeau du pays (image)",
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Pays mis à jour avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Pays mis à jour avec succès"
+                                        },
+                                        "country": {
+                                            "$ref": "#/components/schemas/Country"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Données invalides"
+                    },
+                    "404": {
+                        "description": "Pays non trouvé"
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Country": {
+                "title": "Country",
+                "description": "Modèle de pays",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID du pays",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "name": {
+                        "title": "Nom",
+                        "description": "Nom du pays",
+                        "type": "string",
+                        "example": "France"
+                    },
+                    "capital": {
+                        "title": "Capitale",
+                        "description": "Capitale du pays",
+                        "type": "string",
+                        "example": "Paris"
+                    },
+                    "population": {
+                        "title": "Population",
+                        "description": "Population du pays",
+                        "type": "integer",
+                        "example": 67000000
+                    },
+                    "region": {
+                        "title": "Région",
+                        "description": "Région du pays",
+                        "type": "string",
+                        "example": "Europe"
+                    },
+                    "flag_url": {
+                        "title": "URL du drapeau",
+                        "description": "URL vers l'image du drapeau",
+                        "type": "string",
+                        "example": "http://localhost:8000/storage/flags/france.jpg"
+                    },
+                    "created_at": {
+                        "title": "Date de création",
+                        "description": "Date de création du pays",
+                        "format": "datetime",
+                        "example": "2023-01-01T00:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "title": "Date de mise à jour",
+                        "description": "Date de dernière mise à jour du pays",
+                        "format": "datetime",
+                        "example": "2023-01-01T00:00:00.000000Z"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Country"
+                }
+            },
+            "User": {
+                "title": "User",
+                "description": "Modèle d'utilisateur",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID de l'utilisateur",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "name": {
+                        "title": "Nom",
+                        "description": "Nom de l'utilisateur",
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "description": "Adresse email de l'utilisateur",
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@example.com"
+                    },
+                    "email_verified_at": {
+                        "title": "Date de vérification de l'email",
+                        "description": "Date à laquelle l'email a été vérifié",
+                        "format": "datetime",
+                        "example": "2023-01-01T00:00:00.000000Z",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "title": "Date de création",
+                        "description": "Date de création de l'utilisateur",
+                        "format": "datetime",
+                        "example": "2023-01-01T00:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "title": "Date de mise à jour",
+                        "description": "Date de dernière mise à jour de l'utilisateur",
+                        "format": "datetime",
+                        "example": "2023-01-01T00:00:00.000000Z"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "User"
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authentification",
+            "description": "Opérations d'authentification"
+        },
+        {
+            "name": "Pays",
+            "description": "Opérations sur les pays"
+        }
+    ]
+}
