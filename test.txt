@@ -1,0 +1,86 @@
+*****Enregistrer un Utilisateur:****
+
+
+POST http://localhost:8000/api/register
+Content-Type: application/json
+
+{
+    "name": "Utilisateur Test",
+    "email": "test@example.com",
+    "password": "password123",
+    "password_confirmation": "password123"
+}
+
+*******Connexion******
+
+POST http://localhost:8000/api/login
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "password123"
+}
+
+
+******Obtenir les Informations de l'Utilisateur*****
+
+GET http://localhost:8000/api/user
+Authorization: Bearer VOTRE_TOKEN_ICI
+
+
+******Obtenir Tous les Pays*****
+
+GET http://localhost:8000/api/countries
+Authorization: Bearer VOTRE_TOKEN_ICI
+
+****Obtenir un Pays Spécifique****
+
+
+GET http://localhost:8000/api/countries/1
+Authorization: Bearer VOTRE_TOKEN_ICI
+
+
+*******Créer un Pays******
+POST http://localhost:8000/api/countries
+Content-Type: application/json
+Authorization: Bearer VOTRE_TOKEN_ICI
+
+{
+    "name": "Canada",
+    "capital": "Ottawa",
+    "population": 38000000,
+    "region": "Amérique du Nord",
+    "currency": "Dollar Canadien",
+    "language": "Anglais, Français"
+}
+
+
+*********Mettre à Jour un Pays******
+
+PUT http://localhost:8000/api/countries/1
+Content-Type: application/json
+Authorization: Bearer VOTRE_TOKEN_ICI
+
+{
+    "population": 67500000
+}
+
+
+********* Supprimer un Pays **********
+
+DELETE http://localhost:8000/api/countries/1
+Authorization: Bearer VOTRE_TOKEN_ICI
+
+
+**********Télécharger un Drapeau*********
+
+POST http://localhost:8000/api/countries/1/flag
+Authorization: Bearer VOTRE_TOKEN_ICI
+Content-Type: multipart/form-data
+
+flag: [sélectionnez un fichier]
+
+
+****logout *****
+POST http://localhost:8000/api/logout
+Authorization: Bearer VOTRE_TOKEN_ICI
